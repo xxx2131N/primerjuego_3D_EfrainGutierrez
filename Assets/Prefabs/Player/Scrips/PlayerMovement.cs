@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class NewMonoBehaviourScript : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     private Vector3 fuerzaPorAplicar;
     private float tiempoUltimaFuerza;
@@ -15,7 +15,7 @@ public class NewMonoBehaviourScript : MonoBehaviour
         intervaloTimepo = 2f;
 
         speed = new Vector3(5f, 0f, 0f);
-        SetMovementStrategy(new MovimientoSuave());
+        SetMovementStrategy(new MovimientoAcelerado());
     }
 
     void Update()
@@ -24,7 +24,8 @@ public class NewMonoBehaviourScript : MonoBehaviour
     }
     public void MovePlayer()
     {
-        movementStrategy.Move(transform, speed.x);
+        if (movementStrategy != null)
+            movementStrategy.Move(transform, speed.x);
     }
 
     void FixedUpdate()
@@ -32,7 +33,11 @@ public class NewMonoBehaviourScript : MonoBehaviour
         tiempoUltimaFuerza += Time.fixedDeltaTime;
         if (tiempoUltimaFuerza >= intervaloTimepo)
         {
-            gameObject.GetComponent<Rigidbody>().AddForce(fuerzaPorAplicar);
+            Rigidbody rb = gameObject.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.AddForce(fuerzaPorAplicar);
+            }
             tiempoUltimaFuerza = 0f;
         }
     }
