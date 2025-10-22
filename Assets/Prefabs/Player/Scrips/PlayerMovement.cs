@@ -4,47 +4,32 @@ public class PlayerMovement : MonoBehaviour
 {
     private Vector3 fuerzaPorAplicar;
     private float tiempoUltimaFuerza;
-    private float intervaloTimepo;
-
-    private Vector3 speed;
+    private float intervaloTiempo;
+    private float velocidadLateral;
     private IMovementStrategy movementStrategy;
+
     void Start()
     {
         fuerzaPorAplicar = new Vector3(0f, 0f, 300f);
         tiempoUltimaFuerza = 0f;
-        intervaloTimepo = 2f;
-
-        speed = new Vector3(5f, 0f, 0f);
-        SetMovementStrategy(new MovimientoAcelerado());
+        intervaloTiempo = 2f;
+        velocidadLateral = 5f;
     }
-
-    void Update()
+    public void MovePlayer(float input)
     {
-        MovePlayer();
+        movementStrategy.Move(transform, velocidadLateral,input);
     }
-    public void MovePlayer()
-    {
-        if (movementStrategy != null)
-            movementStrategy.Move(transform, speed.x);
-    }
-
     void FixedUpdate()
     {
         tiempoUltimaFuerza += Time.fixedDeltaTime;
-        if (tiempoUltimaFuerza >= intervaloTimepo)
+        if (tiempoUltimaFuerza >= intervaloTiempo)
         {
-            Rigidbody rb = gameObject.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                rb.AddForce(fuerzaPorAplicar);
-            }
+            GetComponent<Rigidbody>().AddForce(fuerzaPorAplicar);
             tiempoUltimaFuerza = 0f;
         }
     }
-
     public void SetMovementStrategy(IMovementStrategy strategy)
     {
         this.movementStrategy = strategy;
     }
-    
 }
