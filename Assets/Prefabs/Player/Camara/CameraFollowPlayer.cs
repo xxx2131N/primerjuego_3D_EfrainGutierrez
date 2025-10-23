@@ -8,7 +8,7 @@ public class CameraFollwPlayer : MonoBehaviour
     {
         offSet = new Vector3(0f, 1f, -5f);   
         playerMovement = FindObjectOfType<PlayerMovement>();
-    }
+    } 
 
     // Update is called once per frame
     void LateUpdate()
